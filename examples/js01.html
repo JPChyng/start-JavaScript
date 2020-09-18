@@ -1,0 +1,70 @@
+<canvas width=300 height=300 id="c1" ></canvas>
+<script>
+function getRadius(radian){
+	const RANGE = 2;	//宣告常數
+	const FANS = 3;	//宣告常數
+	return RANGE * Math.cos(FANS * radian);
+}
+/*
+function P2R(r,radian){		//極座標轉換成直角座標
+	x = r * Math.cos(radian);	
+	y = r * Math.sin(radian);
+	return {X:x,Y:y};
+}*/
+
+function P2R(polar){		//極座標轉換成直角座標
+	let Cartesian={};
+	Cartesian.X = polar.r * Math.cos(polar.radian);	
+	Cartesian.Y = polar.r * Math.sin(polar.radian);
+	return Cartesian;
+}
+
+function getTrace(){	//收集軌跡的座標點
+	let points=[];					//軌跡點變數
+	let polar={};
+	for (let degree=0; degree<=360; degree+=1){
+		radian=degree/360*Math.PI;	//度轉成弳
+		polar.r=getRadius(radian);
+		polar.radian=radian;
+		points.push(P2R(polar));
+//		points.push(P2R(getRadius(radian),radian));
+	}
+	return points;
+}
+
+function sketch(c1,trace){
+	let	pen=c1.getContext('2d'); 			//拿起畫筆
+	pen.strokeStyle='red'; 					//沾上墨汁
+	
+	let Xseries=[],Yseries=[];
+	
+	for(let i=0, len=trace.length;i<len;i++){
+		Xseries.push(trace[i].X);
+		Yseries.push(trace[i].Y);
+	}
+
+	let span,spanX,spanY;
+	spanX	= c1.width/Math.max(...Xseries)/2;
+	spanY	= c1.height/Math.max(...Yseries)/2;
+	span	=	Math.min(spanX,spanY);
+//	alert(`${spanX} , ${spanY} => ${span}`);
+
+	let start={	X:c1.width/2+span*trace[0].X,
+							Y:c1.height/2+span*trace[0].Y}
+	,		center={X:c1.width/2,Y:c1.height/2}
+	;
+
+	pen.moveTo(start.X, start.Y);	//起點就位
+	for(let t=0,len=trace.length; t<len; t+=1){
+		pen.lineTo(	center.X+span*trace[t].X,
+								center.Y+span*trace[t].Y); 
+	}										//連線定位
+	
+	pen.stroke();							//下筆揮毫
+}
+
+//let c1=document.getElementById('c1');
+//let trace = getTrace();						//計算軌跡
+sketch(document.querySelector('#c1'),getTrace());//描繪軌跡
+
+</script>
