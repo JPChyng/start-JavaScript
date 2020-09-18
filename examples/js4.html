@@ -1,0 +1,21 @@
+<script>
+function Client(name,age) {		//函數宣告式
+	this.name=name;					//情報，即知識
+	this.age=age;					//情報，即知識
+	this.sayHello=function(){		//流程，即法術
+		alert('我是'+this.name+'，'+this.age+'歲。');	}		
+}	//魔法師訓練營
+
+var client1= new Client('John',21);	//登記為1號魔法師
+var client2= new Client('Mark',32);	//登記為2號魔法師
+var client3= new Client('Luck',25);	//登記為3號魔法師
+
+client1.sayHello();					//由1號魔法師自我介紹
+client2.sayHello();					//由2號魔法師自我介紹
+client3.sayHello();					//由3號魔法師自我介紹
+console.log(client1.hasOwnProperty("sayHello"));
+
+/*
+Client2.hairColor='brown';
+Client2.sayHello=function(){ alert(`我是${this.name}，有${this.hairColor}色的頭髮，今年${this.age}歲。`);	}
+*/</script>
