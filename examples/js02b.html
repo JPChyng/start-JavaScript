@@ -1,0 +1,11 @@
+<img src="../images/1.png" width="100" height="100" id="i1" />
+<script>
+	let	img=document.querySelector('#i1');
+console.log(img);
+	img.addEventListener('mouseover',function(){resize(img,2);});
+	img.addEventListener('mouseout' ,function(){resize(img,0.5);});
+	function resize(img,scale){
+ 		img.width *= scale; 	//寬度伸縮scale倍
+  		img.height *= scale; 	//高度伸縮scale倍
+	}
+</script>
