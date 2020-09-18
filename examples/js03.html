@@ -1,0 +1,47 @@
+<body>
+<div id='closeUp'>
+	<h2>Close-Up</h2>
+	<img width="300" height="240" />
+</div>
+<figure id='pets'>
+	<img src='../../images/cat.jpg' alt='cat!' width="80px" />
+	<img src='../../images/dog.jpg' alt='dog!' width="80px" />
+	<img src='../../images/pig.jpg' alt='pig!' width="80px" />
+</figure>
+</body>
+
+<script>
+;(function(){
+function zoomUp(closeUp,source){
+	closeUp.children[0].textContent	=source.alt;
+	closeUp.children[1].src			=source.src;
+}
+
+let	closeUp	= document.querySelector('#closeUp'),
+	pets	= document.querySelector('#pets');
+for	(let i=0,c=pets.childElementCount; i<c ; i++){
+	pets.children[i].addEventListener("click",
+		function(){zoomUp(closeUp,this);});
+}})();
+</script>
+
+<script>
+/*
+window.addEventListener("load",closeUp);
+
+function closeUp(){
+	let	pets		= document.querySelector('#pets')
+	,	pet				= pets.childNodes
+	,	title			= document.querySelector('#title')
+	,	closeup		= title.nextElementSibling	
+	;	
+	for(let i=0,len=pet.length ; i<len ; i++){
+		pet[i].addEventListener("click",pickup);
+	}
+	function pickup(){
+		title.innerHTML=this.alt;
+		closeup.src=this.src;
+		console.log(this);
+	}
+}	*/
+</script>
