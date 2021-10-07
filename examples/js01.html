@@ -1,70 +1,153 @@
 <canvas width=300 height=300 id="c1" ></canvas>
 <script>
-function getRadius(radian){
+
+function getRadius(radian){//ver 1.0
 	const RANGE = 2;	//宣告常數
 	const FANS = 3;	//宣告常數
-	return RANGE * Math.cos(FANS * radian);
+	return RANGE * Math.cos(FANS * radian);//送出答案
 }
-/*
+
+/*function getRadius(radian){//ver 2.0
+	const RANGE = 2;	//宣告常數
+	return RANGE * Math.cos(FANS * radian);//送出答案
+}*/
+
+
+
 function P2R(r,radian){		//極座標轉換成直角座標
 	x = r * Math.cos(radian);	
 	y = r * Math.sin(radian);
 	return {X:x,Y:y};
-}*/
+}
 
-function P2R(polar){		//極座標轉換成直角座標
+/*
+function P2R(polar){		//極座標轉換成直角座標 //version 2.0
 	let Cartesian={};
 	Cartesian.X = polar.r * Math.cos(polar.radian);	
 	Cartesian.Y = polar.r * Math.sin(polar.radian);
 	return Cartesian;
-}
+}*/
 
 function getTrace(){	//收集軌跡的座標點
 	let points=[];					//軌跡點變數
-	let polar={};
+	let radian;
+	//let polar={};//version 2.0
+	
 	for (let degree=0; degree<=360; degree+=1){
 		radian=degree/360*Math.PI;	//度轉成弳
-		polar.r=getRadius(radian);
+		points.push(P2R(getRadius(radian),radian));
+	}
+//version 2.0	
+/*	for (let degree=0; degree<=360; degree+=1){ 
+		radian=degree/360*Math.PI;	//度轉成弳
+		polar.r=getRadius(radian);	//version 1.0
 		polar.radian=radian;
 		points.push(P2R(polar));
-//		points.push(P2R(getRadius(radian),radian));
 	}
+*/	
 	return points;
 }
 
-function sketch(c1,trace){
+//version 2.0
+function clearCanvas(c1){
 	let	pen=c1.getContext('2d'); 			//拿起畫筆
-	pen.strokeStyle='red'; 					//沾上墨汁
-	
-	let Xseries=[],Yseries=[];
-	
-	for(let i=0, len=trace.length;i<len;i++){
-		Xseries.push(trace[i].X);
-		Yseries.push(trace[i].Y);
-	}
+	pen.clearRect(0, 0, c1.width, c1.height);
+}
 
-	let span,spanX,spanY;
-	spanX	= c1.width/Math.max(...Xseries)/2;
-	spanY	= c1.height/Math.max(...Yseries)/2;
-	span	=	Math.min(spanX,spanY);
+function getScale(canvas,trace){
+	
+	let Xs=[],Ys=[],X,Y,scale;//version 1.0
+//	let Xs=[],Ys=[],span={};	//version 2.0
+
+	for(let i=0, len=trace.length; i<len; i++){
+		Xs.push(trace[i].X);		//全部的X座標
+		Ys.push(trace[i].Y);		//全部的Y座標
+	}
+	
+	//version 1.0
+	X=Math.max(Math.abs(...Xs));	//最遠的X座標
+	Y=Math.max(Math.abs(...Ys));	//最遠的Y座標
+	
+	//version 2.0
+	/*
+	span.X=Math.max(Math.abs(...Xs));	//最遠的X座標
+	span.Y=Math.max(Math.abs(...Ys));	//最遠的Y座標
+	*/
+	
+	//version 1.0
+	return 0.5*Math.min(canvas.width/X,canvas.height/Y);
+	// version 2.0
+//	return 	0.5*Math.min(canvas.width/span.X,canvas.height/span.Y);
+} //取得比例尺
+
+function sketch(canvas,trace){
+	//clearCanvas(canvas);//version 2.0
+	let scale = getScale(canvas,trace);
+	
+//	let Xseries=[],Yseries=[];
+//	
+//	for(let i=0, len=trace.length;i<len;i++){
+//		Xseries.push(trace[i].X);
+//		Yseries.push(trace[i].Y);
+//	}
+//
+//	let span,spanX,spanY;
+//	spanX	= c1.width/Math.max(Math.abs(...Xseries))/2;
+//	spanY	= c1.height/Math.max(Math.abs(...Yseries))/2;
+//	span	=	Math.min(spanX,spanY);
 //	alert(`${spanX} , ${spanY} => ${span}`);
 
-	let start={	X:c1.width/2+span*trace[0].X,
-							Y:c1.height/2+span*trace[0].Y}
-	,		center={X:c1.width/2,Y:c1.height/2}
-	;
+	let	center={X:canvas.width/2,
+				Y:canvas.height/2};
+	console.log(center);
+	let start={	X:center.X/2+scale*trace[0].X,
+				Y:center.Y/2+scale*trace[0].Y};
+	console.log(start);
 
-	pen.moveTo(start.X, start.Y);	//起點就位
-	for(let t=0,len=trace.length; t<len; t+=1){
-		pen.lineTo(	center.X+span*trace[t].X,
-								center.Y+span*trace[t].Y); 
-	}										//連線定位
+	let pen=canvas.getContext('2d'); 		//拿起畫筆
+	pen.strokeStyle='red'; 					//沾上墨汁
+
+	pen.moveTo(start.X, start.Y);			//起點就位
+	pen.beginPath();
 	
+	for(let t=0,len=trace.length; t<len; t+=1){
+		pen.lineTo(	center.X+scale*trace[t].X,
+					center.Y+scale*trace[t].Y);
+	}//end for								//連線定位
+	
+	pen.closePath();
 	pen.stroke();							//下筆揮毫
 }
 
 //let c1=document.getElementById('c1');
 //let trace = getTrace();						//計算軌跡
+
+
+
+function changeFans(){
+	var n=Math.ceil(Math.random()*9);
+	switch(true){
+		case (n<=4):{	FANS = 3;	break;}
+		case (n<=6):{	FANS = 5;	break;}
+		case (n<=8):{	FANS = 7;	break;}
+		default:	 	{	FANS = 9;	break;}
+	}
+}
+
+//var FANS=3;	//宣告常數//version 2.0
+var c1=document.querySelector('#c1');
 sketch(document.querySelector('#c1'),getTrace());//描繪軌跡
+
+//c1.addEventListener('click',()=>{
+//		changeFans();
+//		sketch(c1,getTrace());//描繪軌跡
+//});
+
+/* version 2.0
+c1.onclick=()=>{
+	changeFans();
+	sketch(c1,getTrace());
+}
+*/
 
 </script>

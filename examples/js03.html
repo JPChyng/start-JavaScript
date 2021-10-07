@@ -1,47 +1,87 @@
-<body>
-<div id='closeUp'>
-	<h2>Close-Up</h2>
-	<img width="300" height="240" />
-</div>
-<figure id='pets'>
-	<img src='../../images/cat.jpg' alt='cat!' width="80px" />
-	<img src='../../images/dog.jpg' alt='dog!' width="80px" />
-	<img src='../../images/pig.jpg' alt='pig!' width="80px" />
-</figure>
-</body>
-
 <script>
-;(function(){
-function zoomUp(closeUp,source){
-	closeUp.children[0].textContent	=source.alt;
-	closeUp.children[1].src			=source.src;
-}
 
-let	closeUp	= document.querySelector('#closeUp'),
-	pets	= document.querySelector('#pets');
-for	(let i=0,c=pets.childElementCount; i<c ; i++){
-	pets.children[i].addEventListener("click",
-		function(){zoomUp(closeUp,this);});
-}})();
-</script>
+(function(){
+	
+let wizard = {};					//宣告魔法師
 
-<script>
+wizard.hasName = function(name){		//培訓法術
+	if (this.name===name) {return true;}	//this=wizard
+	return false;
+};
+
+wizard.isHit = function(answer,guess){
+	if( answer == guess ){return true;}
+	else {return false;}	
+};//判斷猜中與否
+
+wizard.showMsg = function(flag){
+	if(flag){ alert('中');	}	//flag==true
+	else 	{ alert('不中');	}	//flag==false
+};//展示結果
+
+wizard.answer=0;//正確答案
+
+wizard.setAnswer=function(){
+	this.answer=Math.floor(Math.random()*10);
+};//敲定一個答案
+
+wizard.getAnswer=function(){
+	return this.answer;
+};//取得答案
+
+wizard.getGuess=function(){
+	return prompt("猜個數(0-9)","0");
+};//取得猜的數
+
+/*//	play only once
+wizard.runGame=function(){
+	let answer=this.getAnswer();
+	let	guess=this.getGuess();
+	let	isHit=this.isHit(answer,guess);
+	this.showMsg(isHit);
+};//執行遊戲
+*/
+
+wizard.init=function(){
+	this.setAnswer();
+	this.runGame();
+};//啟動遊戲
+
 /*
-window.addEventListener("load",closeUp);
+wizard.runGame=function(){
+	let answer=this.getAnswer();
+	let i,guessTimes;
+for(i=0,guessTimes=5;i<guessTimes;i++){
+	let	guess=this.getGuess();
+	let	isHit=this.isHit(answer,guess);
+	this.showMsg(isHit);
+	if (isHit==true) {break;}//一旦猜中就停止車輪戰
+}};//執行遊戲// with for loop
+*/
 
-function closeUp(){
-	let	pets		= document.querySelector('#pets')
-	,	pet				= pets.childNodes
-	,	title			= document.querySelector('#title')
-	,	closeup		= title.nextElementSibling	
-	;	
-	for(let i=0,len=pet.length ; i<len ; i++){
-		pet[i].addEventListener("click",pickup);
+
+wizard.runGame=function(){
+	let answer=this.getAnswer();
+	let i,isHit=false;
+	while(!isHit){
+		let guess = this.getGuess();
+		isHit = this.isHit(answer,guess);
+		this.showMsg(isHit);
 	}
-	function pickup(){
-		title.innerHTML=this.alt;
-		closeup.src=this.src;
-		console.log(this);
-	}
-}	*/
+};//執行遊戲//	with while loop
+
+
+/*
+wizard.runGame=function(){
+	let answer=this.getAnswer();
+	let i,isHit=false;
+	do {
+		guess = this.getGuess();
+		isHit = this.isHit(answer,guess);
+		this.showMsg(isHit);
+	} while (!isHit)
+};//執行遊戲//	with do..while loop
+*/
+wizard.init();
+})();
 </script>

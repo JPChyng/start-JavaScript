@@ -1,10 +1,30 @@
+<div id="clock">
+	Hello there, now is 
+	<span id="hour"></span>:
+	<span id="minute"></span>:
+	<span id="second"></span>
+</div>
 <script>
-(function(){
-	let answer = 5;
-	if (answer == prompt("猜個數","0") ) { 
-		alert('中'); 
-	} else {
-		alert('不中...'); 
-	}
-})();
+
+let clock 	= document.querySelector('#clock');
+
+let hour 	= document.querySelector('#hour');
+let minute 	= document.querySelector('#minute');
+let second 	= document.querySelector('#second');
+
+let today	= new Date();
+refresh();
+
+function refresh(){
+	hour.textContent = today.getHours();
+	minute.textContent = today.getMinutes();
+	second.textContent = today.getSeconds();
+}
+
+window.setInterval(()=>{
+	today = new Date();
+	refresh();
+},1000);
+
+
 </script>
