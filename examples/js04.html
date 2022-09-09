@@ -10,13 +10,35 @@
 </figure>
 </body>
 
+<!-- with object-->
+<script>
+const C= {};
+	C.closeup	= document.querySelector('#closeUp');
+	C.pets		= document.querySelector('#pets');
+	
+	C.zoom= function (target,source){
+		target.children[0].textContent	=source.alt;
+		target.children[1].src				=source.src;
+	};	//特寫鏡頭
+	
+	C.init = function(){
+		let that = this,	//C
+			i, cnt=this.pets.childElementCount;
+		for(let i=0; i<cnt ; i++){
+			this.pets.children[i].addEventListener("click",function(){
+				that.zoom(that.picture,this);
+			});//佈置魔法
+		}
+	};
+	C.init();
+</script>
 
 <!-- case 1: with for loop<----
 <script>
 let	closeUp	= document.querySelector('#closeUp'),
-		pets	= document.querySelector('#pets');
+		pets		= document.querySelector('#pets');
 
-for	(let i=0,c=pets.childElementCount; i<c ; i++){
+for (let i=0, c=pets.childElementCount; i<c ; i++){
 	pets.children[i].addEventListener("click",function(){
 		closeUp.children[0].textContent	=this.alt;
 		closeUp.children[1].src				=this.src;
@@ -47,8 +69,7 @@ let	closeUp	= document.querySelector('#closeUp'),
 <script>
 let	closeUp	= document.querySelector('#closeUp'),
 		pets		= document.querySelector('#pets');
-console.log('closeUp=',closeUp);
-console.log('pets=',pets);
+
 Array.from(pets.children).forEach((pet)=>{		
 	pet.addEventListener("click",function(){
 		closeUp.children[0].textContent	= this.alt;
@@ -59,10 +80,10 @@ Array.from(pets.children).forEach((pet)=>{
 <!---->
 
 
-<!-- case 4: with zoomUp function and for loop<!---->
-<script>
+<!-- case 4: with zoomUp function and for loop<!----
+<!--<script>
 let	closeUp	= document.querySelector('#closeUp'),
-pets	= document.querySelector('#pets');
+		pets		= document.querySelector('#pets');
 
 for	(let i=0,c=pets.childElementCount; i<c ; i++){
 	pets.children[i].addEventListener("click",function(){
@@ -75,8 +96,4 @@ function zoomUp(closeUp,source){
 	closeUp.children[1].src			=source.src;
 }
 </script>
-<!---->
-
-
-
-
+-->

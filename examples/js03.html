@@ -2,86 +2,82 @@
 
 (function(){
 	
-let wizard = {};					//宣告魔法師
-
-wizard.hasName = function(name){		//培訓法術
-	if (this.name===name) {return true;}	//this=wizard
-	return false;
-};
+let wizard = {};					//宣告法寶
+wizard.answer=0;//正確答案
+wizard.setAnswer=function(){
+	this.answer=Math.floor(Math.random()*10);
+};	//搖骰子
+wizard.getAnswer=function(){
+	return this.answer;
+};	//取得答案
 
 wizard.isHit = function(answer,guess){
-	if( answer == guess ){return true;}
-	else {return false;}	
+	if( answer == guess ){
+		return true;
+	}	else {
+		return false;
+	}	
 };//判斷猜中與否
 
 wizard.showMsg = function(flag){
-	if(flag){ alert('中');	}	//flag==true
-	else 	{ alert('不中');	}	//flag==false
+	if(flag){ //flag==true
+		alert('中');	
+	}	else 	{ //flag==false
+		alert('不中');	
+	}	
 };//展示結果
-
-wizard.answer=0;//正確答案
-
-wizard.setAnswer=function(){
-	this.answer=Math.floor(Math.random()*10);
-};//敲定一個答案
-
-wizard.getAnswer=function(){
-	return this.answer;
-};//取得答案
 
 wizard.getGuess=function(){
 	return prompt("猜個數(0-9)","0");
 };//取得猜的數
 
-/*//	play only once
+/*	Can play only once
 wizard.runGame=function(){
 	let answer=this.getAnswer();
 	let	guess=this.getGuess();
 	let	isHit=this.isHit(answer,guess);
 	this.showMsg(isHit);
-};//執行遊戲
+};	//執行遊戲，一次為限
 */
-
 wizard.init=function(){
 	this.setAnswer();
 	this.runGame();
 };//啟動遊戲
 
-/*
+wizard.init();
+/* Max turn is 5.
 wizard.runGame=function(){
 	let answer=this.getAnswer();
-	let i,guessTimes;
-for(i=0,guessTimes=5;i<guessTimes;i++){
-	let	guess=this.getGuess();
-	let	isHit=this.isHit(answer,guess);
-	this.showMsg(isHit);
-	if (isHit==true) {break;}//一旦猜中就停止車輪戰
-}};//執行遊戲// with for loop
+	let times=0, maxTimes=5, guess, isHit;//Times;
+	for(times,times<maxTimes;times++){
+		guess=this.getGuess();
+		isHit=this.isHit(answer,guess);
+		this.showMsg(isHit);
+		if (isHit==true) {
+			break;
+		}//一旦猜中就停止車輪戰
+	}
+};	//執行遊戲，五次為限
 */
-
-
 wizard.runGame=function(){
+	let guess, isHit=false;
 	let answer=this.getAnswer();
-	let i,isHit=false;
 	while(!isHit){
-		let guess = this.getGuess();
+		guess = this.getGuess();
 		isHit = this.isHit(answer,guess);
 		this.showMsg(isHit);
 	}
-};//執行遊戲//	with while loop
-
-
+};//執行遊戲，不限次數
 /*
 wizard.runGame=function(){
 	let answer=this.getAnswer();
-	let i,isHit=false;
+	let isHit=false;
 	do {
 		guess = this.getGuess();
 		isHit = this.isHit(answer,guess);
 		this.showMsg(isHit);
 	} while (!isHit)
-};//執行遊戲//	with do..while loop
+};//執行遊戲，不限次數
 */
-wizard.init();
 })();
 </script>
