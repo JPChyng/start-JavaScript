@@ -1,100 +1,85 @@
-<table id="calendar" border="0"></table>
+<!--<table id="calendar" border="0"></table>-->
 <table border="0">
+	<caption id="calendar"></caption>
 	<tr>
-		<th>Sun.</th>
-		<th>Mon.</th>
-		<th>Tue.</th>
-		<th>Wed.</th>
-		<th>Thu.</th>
-		<th>Fri.</th>
-		<th>Sat.</th>
+		<th>Sun.</th><th>Mon.</th><th>Tue.</th><th>Wed.</th><th>Thu.</th><th>Fri.</th><th>Sat.</th>
 	</tr>
+	<tbody>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 	<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+	</tbody>
 </table>
+
 <script>
 
-/*
-function Calendar(name){
-	this.name=name;
-	this.init= function(){
-		let aTable = document.createElement('table');
-		let a = document.createAttribute("id");
-		a.value = name;
-		aTable.setAttributeNode(a);
-		
-		let parent = document.querySelector('body');
-		document.appendChild(aTable);
-	};
-	this.setTitle = function(){
-		let newRow=this.calendar.insertRow(-1);
-		cells=['Sun.','Mon.','Tue.','Wed.','Thu.','Fri.','Sat.'];
-		cells.forEach(function(element){
-			newRow.insertCell().textContent=element;
-		});
-	};
-	this.insertRow = function(cells){
-		let newRow=this.calendar.insertRow(-1);
-		cells.forEach(function(element){
-			newRow.insertCell().textContent=element;
-		});
-	};
-	
+const Calendar={};
+
+Calendar.settings=function(){
+	this.table=document.querySelector('table');
 }
 
-const myCalendar = new Calendar('calendar');
-myCalendar.init();
-myCalendar.setTitle();
-myCalendar.insertRow([1,2,3,4,5,6,7]);
-//myCalendar.rows[1].cells[0].textContent=1;
-//myCalendar.rows[1].cells[1].textContent=2;
-//myCalendar.rows[1].cells[2].textContent=3;
-//myCalendar.rows[1].cells[3].textContent=4;
-//myCalendar.rows[1].cells[4].textContent=5;
-//myCalendar.rows[1].cells[5].textContent=6;
-//myCalendar.rows[1].cells[6].textContent=7;
+Calendar.getDays=function(year,month){
+	const DAYS=[31,28,31,30,31,30,31,31,30,31,30,31];
+	if (this.isLeapYear(year)==true) {
+		DAYS[1]=29;//閏年二月份
+	}
+	return DAYS[month];
+};//取得某個月的日數
+
+Calendar.isLeapYear=function(year){
+	if(((year%4==0)&&(year%100!=0))||(year%400==0)){
+			return true;	
+	} else {	
+		return false;	
+	}
+};//判斷閏年
+
+Calendar.newMonth=function(){
+	let today = new Date();		//建立新時刻
+//	let today = new Date('1975,4,1');		//建立新時刻
+	console.log(today);
+	let year=today.getFullYear();	//擷取年份
+	let month=today.getMonth();		//擷取月份
+	let firstDay= (new Date(year,month)).getDay();
+	let days=this.getDays(year,month);
+//Method Two
+/*
+	let date=[];	
+	for (let i=0; i<days; i++){
+		date.push(i+1);
+	}
+	
+	let week=1;
+	let that=this;
+
+	date.forEach(function(date){
+		day = (firstDay-1+date) % 7;	//['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+		if (day==0) week++;
+		that.table.rows[week].cells[day].textContent=date;
+	});
 */
 
+// Method One
 
-let calendar = document.querySelectorAll('table')[1];
-
-
-let today		= new Date();
-let thisYear 	= today.getFullYear();
-let thisMonth 	= today.getMonth();
-let firstDay	= new Date(thisYear,thisMonth).getDay();
-let length		= getMonthDays(thisYear,thisMonth);
-//let day=0,w,d;
-
-for (let i=0,day=0,w,d;i<length;i++){
-	day=i+firstDay;
-	w = Math.ceil((1+day)/7);
-	d = Math.ceil(day%7);
-	if (day>6) {day = 0;}
-	
-//	console.log(calendar.rows[w].cells[d]);
-	calendar.rows[w].cells[d].textContent=i+1;
-}
-
-function getMonthDays(year,month){
-	let daysPerMonth=[31,28,31,30,31,30,31,31,30,31,30,31];
-
-	if (isLeapYear()==true) {
-		daysPerMonth[1]=29;
+	for (let date=0,vday,day,week; date<days;){
+		vday=date+firstDay;				//首日平移
+		day  = Math.ceil(vday % 7);	//星期幾
+		w = Math.floor(1+(vday)/7);	//週次
+		if (day>6) {day = 0;	}			//星期數歸零
+		this.table.rows[w].cells[day].textContent=++date;
 	}
 
-	return daysPerMonth[month];
-}
+};//newMonth
 
-function isLeapYear(thisYear){
-	if (((thisYear %4 == 0) && (thisYear %100 != 0)) || (thisYear %400 == 0)){
-		return true;
-	}
-	return false;
-}
+Calendar.init=function(){
+	this.settings();
+	this.newMonth();
+}; 
+
+Calendar.init();
 
 </script>
