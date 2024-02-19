@@ -3,6 +3,7 @@
 * @var case d: with Array.from() for nodelist --/>
 * 
 */
+
 console.log('script04d.js');
 
 let	closeUp	= document.querySelector('#closeUp'),
