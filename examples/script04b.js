@@ -14,7 +14,7 @@ function zoomUp(target,source){
 	target.children[1].src			=source.src;
 }
 
-for	(let i=0, c=pets.childElementCount; i<c ; i++){
+for (let i=0, c=pets.childElementCount; i<c ; i++){
 	pets.children[i].addEventListener("click",function(){
 		zoomUp(closeUp,this);
 	});
