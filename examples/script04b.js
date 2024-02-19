@@ -4,7 +4,7 @@
 * 
 */
 
-console.log('script0a.js');
+console.log('script0b.js');
 
 let	closeUp	= document.querySelector('#closeUp'),
 		pets		= document.querySelector('#pets');
