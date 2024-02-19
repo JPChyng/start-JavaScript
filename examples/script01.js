@@ -1,4 +1,4 @@
-	let img=document.querySelector('#i1');
+	let img = document.querySelector('#i1');
 console.log(img);
 	img.addEventListener('mouseover',function(){
 		resize(this,2);	
