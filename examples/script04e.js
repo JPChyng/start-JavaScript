@@ -8,7 +8,7 @@ console.log('script04e.js');
 const closeUp = {};
 	// 設定畫面區域
 closeUp.closeup	= document.querySelector('#closeUp');
-closeUp.pets		= document.querySelector('#pets');
+closeUp.pets	= document.querySelector('#pets');
 
 	// 抓特寫
 closeUp.zoom = function (target,source){
